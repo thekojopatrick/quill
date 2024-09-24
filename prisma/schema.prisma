@@ -7,11 +7,11 @@ generator client {
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
-
+    provider  = "postgresql"
+    url       = env("DATABASE_URL")
+    directUrl = env("DIRECT_URL")
     // If you have enabled foreign key constraints for your database, remove this line.
-    relationMode = "prisma"
+    //relationMode = "prisma"
 }
 
 model Post {
