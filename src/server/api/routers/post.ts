@@ -1,8 +1,15 @@
-import { z } from "zod";
-
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 
+import { z } from "zod";
+
 export const postRouter = createTRPCRouter({
+  intro: publicProcedure.query(async ({ ctx }) => {
+    const user = ctx.user?.family_name;
+    return {
+      greeting: `Welcome! ${user ?? "guest"}`,
+    };
+  }),
+
   hello: publicProcedure
     .input(z.object({ text: z.string() }))
     .query(({ input }) => {
