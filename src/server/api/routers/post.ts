@@ -1,9 +1,13 @@
-import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "@/server/api/trpc";
 
 import { z } from "zod";
 
 export const postRouter = createTRPCRouter({
-  intro: publicProcedure.query(async ({ ctx }) => {
+  intro: protectedProcedure.query(async ({ ctx }) => {
     const user = ctx.user?.family_name;
     return {
       greeting: `Welcome! ${user ?? "guest"}`,
