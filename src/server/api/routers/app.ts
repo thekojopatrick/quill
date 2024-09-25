@@ -2,10 +2,12 @@ import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 
 import { TRPCError } from "@trpc/server";
 
-export const appRouter = createTRPCRouter({
+export const appIndexRouter = createTRPCRouter({
   authCallback: publicProcedure.query(async ({ ctx }) => {
     const user = ctx.user;
-    if (!user?.id || user?.email) throw new TRPCError({ code: "UNAUTHORIZED" });
+
+    if (!user?.id || !user?.email)
+      throw new TRPCError({ code: "UNAUTHORIZED" });
 
     // check if the user is in the database
     const dbUser = await ctx.db.user.findFirst({
@@ -19,7 +21,7 @@ export const appRouter = createTRPCRouter({
       await ctx.db.user.create({
         data: {
           id: user.id,
-          email: user.email!,
+          email: user.email,
         },
       });
     }

@@ -6,6 +6,7 @@ import {
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import MaxWidthWrapper from "./MaxWithWrapper";
+import MobileNav from "./MobileNav";
 import { buttonVariants } from "./ui/button";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
@@ -17,7 +18,7 @@ const Navbar = async () => {
   const user = await getUser();
   const isUserAuthenticated = await isAuthenticated();
 
-  console.log({ user });
+  // console.log({ user });
 
   return (
     <nav className="sticky inset-x-0 top-0 z-30 h-14 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all">
@@ -27,7 +28,7 @@ const Navbar = async () => {
             <span>quill.</span>
           </Link>
 
-          {/* <MobileNav isAuth={!!user} /> */}
+          <MobileNav isAuth={!!user} />
           <div className="hidden items-center space-x-4 sm:flex">
             {!isUserAuthenticated ? (
               <>
