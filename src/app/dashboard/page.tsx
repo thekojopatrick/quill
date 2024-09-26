@@ -3,6 +3,7 @@ import {
   getKindeServerSession,
 } from "@kinde-oss/kinde-auth-nextjs/server";
 
+import Dashboard from "@/components/Dashboard";
 import React from "react";
 import { api } from "@/trpc/server";
 import { db } from "@/server/db";
@@ -26,7 +27,7 @@ const Page = async () => {
   return (
     <div className="container py-4">
       <h1>{intro.greeting}</h1>
-      <LogoutLink>Logout</LogoutLink>
+      <Dashboard />
     </div>
   );
 };
