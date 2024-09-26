@@ -35,7 +35,7 @@ export const appIndexRouter = createTRPCRouter({
   getUserFiles: protectedProcedure.query(async ({ ctx }) => {
     const { userId, db } = ctx;
 
-    return await db.file.findMany({ where: { id: userId } });
+    return await db.file.findMany({ where: { userId } });
   }),
 
   getFileUploadStatus: protectedProcedure

@@ -125,7 +125,7 @@ const enforceUserIsAuthed = t.middleware(async ({ ctx, next }) => {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
 
-  return next({ ctx: { userId: dbUser.id, user: kindAuthUser } });
+  return next({ ctx: { userId: dbUser?.id, user: kindAuthUser } });
 });
 
 /**
