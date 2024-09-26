@@ -1,5 +1,6 @@
 import "@/styles/globals.css";
 import "react-loading-skeleton/dist/skeleton.css";
+import "simplebar-react/dist/simplebar.min.css";
 
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";

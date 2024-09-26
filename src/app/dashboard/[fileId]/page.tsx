@@ -27,6 +27,8 @@ const Page = async ({ params }: PageProps) => {
     },
   });
 
+  //console.log({ file });
+
   if (!file) notFound();
 
   //const plan = await getUserSubscriptionPlan();
