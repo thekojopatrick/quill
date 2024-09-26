@@ -6,11 +6,27 @@ import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import { Button } from "./ui/button";
 import Dropzone from "react-dropzone";
 import { Progress } from "./ui/progress";
+import { api } from "@/trpc/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+import { useUploadThing } from "@/lib/uploadthing";
 
 const UploadDropzone = ({ isSubscribed }: { isSubscribed: boolean }) => {
+  const router = useRouter();
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
+  const { toast } = useToast();
+
+  const { startUpload } = useUploadThing("pdfUploader");
+
+  const { mutate: startPolling } = api.app.getFile.useMutation({
+    onSuccess: (file) => {
+      router.push(`/dashboard/${file.id}`);
+    },
+    retry: true,
+    retryDelay: 500,
+  });
 
   const startSimulatedProgress = () => {
     setUploadProgress(0);
@@ -38,9 +54,7 @@ const UploadDropzone = ({ isSubscribed }: { isSubscribed: boolean }) => {
 
         const progressInterval = startSimulatedProgress();
 
-        await new Promise((resolve) => setTimeout(resolve, 10000));
-        /** 
-
+        // await new Promise((resolve) => setTimeout(resolve, 10000));
 
         // handle file uploading
         const res = await startUpload(acceptedFile);
@@ -65,11 +79,10 @@ const UploadDropzone = ({ isSubscribed }: { isSubscribed: boolean }) => {
           });
         }
 
-        
-        startPolling({ key });
-        */
         clearInterval(progressInterval);
         setUploadProgress(100);
+
+        startPolling({ key });
       }}
     >
       {({ getRootProps, getInputProps, acceptedFiles }) => (
