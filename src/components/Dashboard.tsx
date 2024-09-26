@@ -25,19 +25,19 @@ const Dashboard = () => {
 
   const utils = api.useUtils();
 
-  //   const { data: files, isLoading } = api.app.getUserFiles.useQuery();
+  const { data: files, isLoading } = api.app.getUserFiles.useQuery();
 
-  //   const { mutate: deleteFile } = api.app.deleteFile.useMutation({
-  //     onSuccess: () => {
-  //       utils.getUserFiles.invalidate();
-  //     },
-  //     onMutate({ id }) {
-  //       setCurrentlyDeletingFile(id);
-  //     },
-  //     onSettled() {
-  //       setCurrentlyDeletingFile(null);
-  //     },
-  //   });
+  const { mutate: deleteFile } = api.app.deleteFile.useMutation({
+    onSuccess: async () => {
+      await utils.app.getUserFiles.invalidate();
+    },
+    onMutate({ id }) {
+      setCurrentlyDeletingFile(id);
+    },
+    onSettled() {
+      setCurrentlyDeletingFile(null);
+    },
+  });
 
   return (
     <main className="mx-auto max-w-7xl md:p-10">
@@ -48,7 +48,7 @@ const Dashboard = () => {
       </div>
 
       {/* display all user files */}
-      {/** 
+
       {files && files?.length !== 0 ? (
         <ul className="mt-8 grid grid-cols-1 gap-6 divide-y divide-zinc-200 md:grid-cols-2 lg:grid-cols-3">
           {files
@@ -114,7 +114,6 @@ const Dashboard = () => {
           <p>Let&apos;s upload your first PDF.</p>
         </div>
       )}
-        */}
     </main>
   );
 };
