@@ -4,7 +4,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 import { Loader2 } from "lucide-react";
 import { api } from "@/trpc/react";
-import { useEffect } from "react";
 
 const AuthCallback = () => {
   const router = useRouter();
@@ -19,24 +18,16 @@ const AuthCallback = () => {
     },
   );
 
-  useEffect(() => {
-    if (isError) {
-      // Handle non-UNAUTHORIZED errors here if needed
-      console.error("An error occurred during authentication");
-    }
-  }, [isError]);
-
   if (data?.success) {
     router.push(origin ? `/${origin}` : "/dashboard");
   }
 
-  if (error) {
-    if (error.data?.code === "UNAUTHORIZED") {
-      router.push("/sign-in");
-    }
+  /** Check if user is not authenticated */
+  if (!isError || !error) {
+    return router.push("/api/auth/login");
   }
 
-  if (isLoading || isError) {
+  if (isLoading) {
     return (
       <div className="mt-24 flex w-full justify-center">
         <div className="flex flex-col items-center gap-2">

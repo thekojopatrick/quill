@@ -112,11 +112,20 @@ export const publicProcedure = t.procedure.use(timingMiddleware);
 
 /** Reusable middleware that enforces users are logged in before running the procedure. */
 
-const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
-  if (!ctx.user) {
+const enforceUserIsAuthed = t.middleware(async ({ ctx, next }) => {
+  const kindAuthUser = ctx.user;
+  // check if the user is in the database
+  const dbUser = await ctx.db.user.findFirst({
+    where: {
+      id: kindAuthUser?.id,
+    },
+  });
+
+  if (!dbUser) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
-  return next({ ctx: { user: ctx.user } });
+
+  return next({ ctx: { user: kindAuthUser } });
 });
 
 /**
